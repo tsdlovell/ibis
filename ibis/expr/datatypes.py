@@ -1246,12 +1246,12 @@ def can_cast_struct(source, target, **kwargs):
     )
 
 
-# @castable.register(Map, Map)
-# def can_cast_maps(source, target):
-#     return (source.equals(target) or
-#             source.equals(Map(null, null)) or
-#             source.equals(Map(any, any)))
-# TODO cast category
+@castable.register(Map, Map)
+def can_cast_maps(source, target):
+    return (source.equals(target) or
+            source.equals(Map(null, null)) or
+            source.equals(Map(target.key_type, null)) or
+            source.equals(Map(any, any)))
 
 
 def cast(source, target, **kwargs):
