@@ -9,7 +9,14 @@ import ibis.expr.datatypes as dt
 from ibis.client import Database, Query, SQLClient
 from ibis.bigquery import compiler as comp
 import google.cloud.bigquery
-from google.api.core.exceptions import BadRequest
+try:
+    from google.api.core.exceptions import BadRequest as BadRequest
+except:
+    BadRequest = None
+try:
+    from google.api_core.exceptions import BadRequest as BadRequest_
+except:
+    BadRequest_ = None
 
 
 NATIVE_PARTITION_COL = '_PARTITIONTIME'
@@ -234,6 +241,6 @@ def bigquery_table_to_ibis_schema(table):
     try:
         if table.list_partitions():
             pairs.append((NATIVE_PARTITION_COL, dt.timestamp))
-    except BadRequest:
+    except (BadRequest, BadRequest_):
         pass
     return ibis.schema(pairs)
